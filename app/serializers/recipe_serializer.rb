@@ -1,5 +1,5 @@
 class RecipeSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :instructions, :updated_at
+  attributes :id, :title, :description, :instruction, :updated_at
 
   has_many :ingredients
 
