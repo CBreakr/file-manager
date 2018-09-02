@@ -1,12 +1,15 @@
 import React from 'react';
 
-const NonEditableRecipe = ({ recipe, toogleIsEditable }) => {
+const NonEditableRecipe = ({ recipe, toogleEditMode }) => {
+  let imageSrc = recipe.image !== null ?
+    recipe.image.url : "https://bulma.io/images/placeholders/1280x960.png";
+
   return (
     <div className="column is-one-third">
       <div className="card">
         <div className="card-image">
-          <figure className="image is-4by3">
-            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image" />
+          <figure className="image is-5by4">
+            <img src={imageSrc} alt="Recipe image" />
           </figure>
         </div>
         <div className="card-content">
@@ -15,12 +18,14 @@ const NonEditableRecipe = ({ recipe, toogleIsEditable }) => {
             {recipe.description}
             <br></br>
             <time>{recipe.updated_at.toLocaleString()}</time>
+            <div className="control has-text-right">
+              <a
+                className="button is-primary"
+                onClick={() => toogleEditMode()}>
+                  Edit
+              </a>
+            </div>
           </div>
-          <a
-            className="button is-primary"
-            onClick={() => toogleIsEditable()}>
-              Edit
-          </a>
         </div>
       </div>
     </div>

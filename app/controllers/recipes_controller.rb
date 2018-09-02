@@ -3,7 +3,7 @@ class RecipesController < ApplicationController
 
   # GET /api/recipes
   def index
-    @recipes = Recipe.all
+    @recipes = Recipe.all.with_attached_image
 
     render json: @recipes
   end
@@ -24,7 +24,7 @@ class RecipesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /api/recipes/1
+  # POST /api/recipes/1
   def update
     if @recipe.update(recipe_params)
       render json: @recipe
@@ -47,6 +47,6 @@ class RecipesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def recipe_params
-    params.require(:recipe).permit(:title, :description, :instruction)
+    params.permit(:title, :description, :instruction, :image)
   end
 end

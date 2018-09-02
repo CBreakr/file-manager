@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
+import ImageUploader from './ImageUploader';
+import './styles/recipe';
 
 class EditableRecipe extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      recipe: this.props.recipe
+      recipe: this.props.recipe,
+      selectedImage: null
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.saveImage = this.saveImage.bind(this);
+    this.removeImage = this.removeImage.bind(this);
   }
 
-  handleInputChange(event) {
+  handleInputChange = event => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -22,9 +27,19 @@ class EditableRecipe extends Component {
     this.setState({ recipe });
   }
 
-  handleSubmit(event) {
+  saveImage = selectedImage => {
+    this.setState({ selectedImage });
+  }
+
+  removeImage = selectedImage => {
+    this.setState({ selectedImage: null });
+  }
+
+  handleSubmit = event => {
     event.preventDefault();
-    this.props.update(this.state.recipe);
+    const formRecipeData = new FormData(event.target);
+    formRecipeData.append('image', this.state.selectedImage);
+    this.props.update(formRecipeData);
   }
 
   render() {
@@ -33,43 +48,51 @@ class EditableRecipe extends Component {
     return (
       <div className="column is-one-third">
         <div className="card">
-          <div className="card-image"></div>
+          <div className="card-image card-padding">
+            <ImageUploader
+              image={recipe.image}
+              saveImage={this.saveImage}
+              removeImage={this.removeImage} />
+          </div>
           <div className="card-content">
             <form onSubmit={this.handleSubmit}>
-              <div className="field">
-                <label className="label">Title</label>
+                <label htmlFor="title" className="label">Title</label>
                 <div className="control">
                   <input
+                    id="title"
                     name="title"
                     className="input"
                     type="text"
                     value={recipe.title}
                     onChange={this.handleInputChange} />
                 </div>
-              </div>
-              <br></br>
-              <div className="field">
-                <label className="label">Description</label>
+                <label htmlFor="description" className="label">Description</label>
                 <div className="control">
                   <textarea
+                    id="description"
                     name="description"
                     className="textarea"
                     value={recipe.description}
                     onChange={this.handleInputChange} />
                 </div>
-              </div>
-              <div className="field">
-                <label className="label">Instruction</label>
+                <label htmlFor="instruction" className="label">Instruction</label>
                 <div className="control">
                   <textarea
+                    id="instruction"
                     name="instruction"
                     className="textarea"
                     value={recipe.instruction}
                     onChange={this.handleInputChange} />
                 </div>
+              <div className="control has-text-right">
+                <input type="submit" value="Submit" className="button is-danger" />
               </div>
-              <input type="submit" value="Submit" className="button is-danger" />
             </form>
+            <a
+              className="button is-primary"
+              onClick={() => this.props.toogleEditMode()}>
+                Close
+            </a>
           </div>
         </div>
       </div>

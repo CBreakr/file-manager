@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import EditableRecipe from './EditableRecipe';
 import NonEditableRecipe from './NonEditableRecipe';
 
@@ -14,11 +15,25 @@ export default class Recipe extends Component {
   }
 
   toogleIsEditable = () => {
-    this.setState({ isEditable: !this.state.isEditable })
+    this.setState(
+      currentState => {
+        return { isEditable: !currentState.isEditable }
+      }
+    );
   }
 
-  update = (recipe) => {
-    this.props.updateRecipe(recipe);
+  update = recipe => {
+    axios({
+      method: 'post',
+      url: `/api/recipes/${this.props.recipe.id}`,
+      data: recipe,
+      config: { headers: {'Content-Type': 'multipart/form-data' }}
+    }).then(response => {
+      this.props.updateRecipe(response.data);
+    }).catch(error => {
+      console.log(error);
+    });
+
     this.toogleIsEditable();
   }
 
@@ -30,13 +45,14 @@ export default class Recipe extends Component {
       return <EditableRecipe
         recipe={recipe}
         update={this.update}
+        toogleEditMode={this.toogleIsEditable}
       />
     }
 
     return (
       <NonEditableRecipe
         recipe={recipe}
-        toogleIsEditable={this.toogleIsEditable}
+        toogleEditMode={this.toogleIsEditable}
       />
     );
   }

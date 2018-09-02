@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   root to: 'home#index'
 
   scope 'api' do
-    resources :recipes do
+    resources :recipes, except: [:update] do
+      member do
+        post :update
+      end
       resources :ingredients, only: [:index, :update, :delete]
     end
   end
