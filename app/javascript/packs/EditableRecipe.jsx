@@ -13,8 +13,8 @@ class EditableRecipe extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.saveImage = this.saveImage.bind(this);
-    this.removeImage = this.removeImage.bind(this);
+    this.selectImage = this.selectImage.bind(this);
+    this.unselectImage = this.unselectImage.bind(this);
   }
 
   handleInputChange = event => {
@@ -27,11 +27,13 @@ class EditableRecipe extends Component {
     this.setState({ recipe });
   }
 
-  saveImage = selectedImage => {
-    this.setState({ selectedImage });
+  selectImage = image => {
+    this.setState({ selectedImage: image });
   }
 
-  removeImage = selectedImage => {
+  unselectImage = image => {
+    return if image.name !== this.state.selectedImage.name;
+
     this.setState({ selectedImage: null });
   }
 
@@ -51,8 +53,8 @@ class EditableRecipe extends Component {
           <div className="card-image card-padding">
             <ImageUploader
               image={recipe.image}
-              saveImage={this.saveImage}
-              removeImage={this.removeImage} />
+              selectImage={this.selectImage}
+              unselectImage={this.unselectImage} />
           </div>
           <div className="card-content">
             <form onSubmit={this.handleSubmit}>
