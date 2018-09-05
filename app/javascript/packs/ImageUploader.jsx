@@ -63,7 +63,7 @@ export default class ImageUploader extends React.PureComponent {
       },
       maxfilesexceeded: image => this.removePrevAndAddNew(image),
       addedfile: image => this.props.selectImage(image),
-      removedfile: image => this.props.unselectImage(image);
+      removedfile: image => this.props.unselectImage(image)
     }
 
     return (

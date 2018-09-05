@@ -1,25 +1,45 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import EditableRecipe from './EditableRecipe';
 import NonEditableRecipe from './NonEditableRecipe';
 
-export default class Recipe extends Component {
+
+class RecipeToggle extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
       isEditable: false
     }
-
-    this.update = this.update.bind(this);
   }
 
-  toogleIsEditable = () => {
-    this.setState(
-      currentState => {
-        return { isEditable: !currentState.isEditable }
-      }
-    );
+  toogle = () => {
+    this.setState(currentState => {
+      return { isEditable: !currentState.isEditable }
+    });
+  }
+
+  render() {
+    return this.props.children({
+      isEditable: this.state.isEditable,
+      toogle: this.toogle
+    })
+
+    // return React.Children.map(this.props.children, childElement => {
+    //   return React.cloneElement(childElement, {
+    //     isEditable={this.state.isEditable}
+    //     recipe={this.props.recipe}
+    //     toogleIsEditable={this.toogleIsEditable}
+
+    //   })
+    // })
+  }
+}
+
+export default class Recipe extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.update = this.update.bind(this);
   }
 
   update = recipe => {
@@ -33,27 +53,32 @@ export default class Recipe extends Component {
     }).catch(error => {
       console.log(error);
     });
-
-    this.toogleIsEditable();
   }
 
   render() {
-    const { recipe } = this.props;
-    const { isEditable } = this.state;
-
-    if(isEditable) {
-      return <EditableRecipe
-        recipe={recipe}
-        update={this.update}
-        toogleEditMode={this.toogleIsEditable}
-      />
-    }
-
     return (
-      <NonEditableRecipe
-        recipe={recipe}
-        toogleEditMode={this.toogleIsEditable}
-      />
-    );
+      <RecipeToggle>
+        {
+          ({isEditable, toogle}) => (
+            <div className="column is-one-third">
+              {isEditable
+                ?
+                <EditableRecipe
+                  recipe={this.props.recipe}
+                  update={this.update}
+                  toogle={toogle} />
+                :
+                <NonEditableRecipe recipe={this.props.recipe} />
+              }
+              <a
+                className="button is-primary"
+                onClick={() => toogle()}>
+                  {isEditable ? 'Close' : 'Edit'}
+              </a>
+            </div>
+          )
+        }
+      </RecipeToggle>
+    )
   }
 }
