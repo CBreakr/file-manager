@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import DropzoneComponent from 'react-dropzone-component';
 import 'react-dropzone-component/styles/filepicker';
 import 'dropzone/dist/min/dropzone.min';
@@ -18,6 +19,16 @@ const componentConfig = {
 }
 
 export default class ImageUploader extends React.PureComponent {
+  static propTypes = {
+    image: PropTypes.shape({
+      name: PropTypes.string,
+      byte_size: PropTypes.integer,
+      url: PropTypes.string
+    }),
+    selectImage: PropTypes.func.isRequired,
+    unselectImage: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props);
   }
@@ -26,7 +37,7 @@ export default class ImageUploader extends React.PureComponent {
     if(image == null) return;
 
     let mockFile = {
-      name: image.filename,
+      name: image.name,
       size: image.byte_size,
       dataURL: image.url,
     };

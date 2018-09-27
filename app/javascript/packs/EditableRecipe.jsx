@@ -7,8 +7,8 @@ class EditableRecipe extends Component {
     super(props);
 
     this.state = {
-      recipe: this.props.recipe,
-      selectedImage: null
+      editableRecipe: this.props.recipe,
+      selectedImage: this.props.recipe.image
     }
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -22,17 +22,16 @@ class EditableRecipe extends Component {
     const value = target.value;
     const name = target.name;
 
-    let { recipe } = this.state;
-    recipe = {...recipe, [name]: value}
-    this.setState({ recipe });
+    let { editableRecipe } = this.state;
+    editableRecipe = {...editableRecipe, [name]: value}
+    this.setState({ editableRecipe });
   }
 
   handleSubmit = event => {
     event.preventDefault();
     const formRecipeData = new FormData(event.target);
     formRecipeData.append('image', this.state.selectedImage);
-    this.props.update(formRecipeData);
-    this.props.toogle();
+    this.props.submit(formRecipeData);
   }
 
   selectImage = image => {
@@ -40,58 +39,58 @@ class EditableRecipe extends Component {
   }
 
   unselectImage = image => {
-    if(image.name !== this.state.selectedImage.name) return;
+    if(this.state.selectedImage && this.state.selectedImage.name !== image.name) return;
 
-    this.setState({ selectedImage: null });
+    this.setState({ selectedImage: '' });
   }
 
   render() {
-    const { recipe } = this.state;
+    const { editableRecipe } = this.state;
 
     return (
-      <div className="card">
+      <React.Fragment>
         <div className="card-image card-padding">
           <ImageUploader
-            image={recipe.image}
+            image={editableRecipe.image}
             selectImage={this.selectImage}
             unselectImage={this.unselectImage} />
         </div>
         <div className="card-content">
           <form onSubmit={this.handleSubmit}>
-              <label htmlFor="title" className="label">Title</label>
-              <div className="control">
-                <input
-                  id="title"
-                  name="title"
-                  className="input"
-                  type="text"
-                  value={recipe.title}
-                  onChange={this.handleInputChange} />
-              </div>
-              <label htmlFor="description" className="label">Description</label>
-              <div className="control">
-                <textarea
-                  id="description"
-                  name="description"
-                  className="textarea"
-                  value={recipe.description}
-                  onChange={this.handleInputChange} />
-              </div>
-              <label htmlFor="instruction" className="label">Instruction</label>
-              <div className="control">
-                <textarea
-                  id="instruction"
-                  name="instruction"
-                  className="textarea"
-                  value={recipe.instruction}
-                  onChange={this.handleInputChange} />
-              </div>
-            <div className="control has-text-right">
+            <label htmlFor="title" className="label">Title</label>
+            <div className="control">
+              <input
+                id="title"
+                name="title"
+                className="input"
+                type="text"
+                value={editableRecipe.title}
+                onChange={this.handleInputChange} />
+            </div>
+            <label htmlFor="description" className="label">Description</label>
+            <div className="control">
+              <textarea
+                id="description"
+                name="description"
+                className="textarea"
+                value={editableRecipe.description}
+                onChange={this.handleInputChange} />
+            </div>
+            <label htmlFor="instruction" className="label">Instruction</label>
+            <div className="control">
+              <textarea
+                id="instruction"
+                name="instruction"
+                className="textarea"
+                value={editableRecipe.instruction}
+                onChange={this.handleInputChange} />
+            </div>
+            <div className="control has-text-left">
               <input type="submit" value="Submit" className="button is-danger" />
             </div>
           </form>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

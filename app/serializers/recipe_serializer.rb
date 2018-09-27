@@ -1,8 +1,7 @@
 class RecipeSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
-  attributes :id, :title, :description, :instruction, :updated_at, :image
 
-  has_many :ingredients
+  attributes :id, :title, :description, :instruction, :updated_at, :image
 
   def updated_at
     object.updated_at.to_date
@@ -14,6 +13,7 @@ class RecipeSerializer < ActiveModel::Serializer
     object.image.blob.attributes
           .slice('filename', 'byte_size')
           .merge(url: image_url)
+          .tap { |attrs| attrs['name'] = attrs.delete('filename') }
   end
 
   def image_url

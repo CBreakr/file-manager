@@ -6,13 +6,11 @@ export function getRecipes() {
   return axios.get(`${API_URL}`);
 }
 
-export function updateRecipe(recipe) {
-  // return axios.get(`${API_URL}${purchaseOrderId}/manage_notes/notes`);
-
+export function updateRecipe(formData, recipeId) {
   return axios({
     method: 'post',
-    url: `${API_URL}/${recipe.id}`,
-    data: recipe,
+    url: `${API_URL}/${recipeId}`,
+    data: formData,
     config: { headers: {'Content-Type': 'multipart/form-data' }}
   });
 }

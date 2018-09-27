@@ -1,25 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
+import { getRecipes } from './api/recipeApi';
+import { mapIntoObject } from './utils/data_structure_util';
 import RecipeList from './RecipeList';
 
-function mapIntoObject(arr) {
-  return arr.reduce((acc, curr) => {
-    acc[curr.id] = curr;
-    return acc;
-  }, {});
-}
-
-export default class App extends Component {
+export default class App extends React.PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      recipes: {}
-      // recipes: {
-      //   1: { id: 1, title: 'Recipe1', description: 'Recipe1 description', instruction: 'Some instruction.', updated_at: new Date(), image: null },
-      //   2: { id: 2, title: 'Recipe2', description: 'Recipe2 description', instruction: 'Some instruction', updated_at: new Date(), image: null }
-      // }
-    }
+    this.state = { recipes: {} }
 
     this.updateRecipe = this.updateRecipe.bind(this);
   }
@@ -33,12 +22,11 @@ export default class App extends Component {
   }
 
   fetchRecipes() {
-    axios.get('/api/recipes')
-      .then(response => {
-        this.setState({ recipes: mapIntoObject(response.data) })
-      }).catch(error => {
-        console.log(error);
-      });
+    getRecipes().then(response => {
+      this.setState({ recipes: mapIntoObject(response.data) })
+    }).catch(error => {
+      console.log(error);
+    });
   }
 
   updateRecipe = recipe => {
