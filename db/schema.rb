@@ -33,14 +33,6 @@ ActiveRecord::Schema.define(version: 2018_07_28_180051) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "ingredients", force: :cascade do |t|
-    t.integer "recipe_id"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["recipe_id"], name: "index_ingredients_on_recipe_id"
-  end
-
   create_table "recipes", force: :cascade do |t|
     t.string "title"
     t.string "description"

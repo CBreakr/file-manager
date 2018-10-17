@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import ImageUploader from './ImageUploader';
-import './styles/recipe';
+import ImageUploader from '../shared/ImageUploader';
+import '../../styles/recipe';
 
 class EditableRecipe extends Component {
   constructor(props) {
@@ -85,7 +85,7 @@ class EditableRecipe extends Component {
                 value={editableRecipe.instruction}
                 onChange={this.handleInputChange} />
             </div>
-            <div className="control has-text-left">
+            <div className="control has-text-left editable-buttons">
               <input type="submit" value="Submit" className="button is-danger" />
             </div>
           </form>

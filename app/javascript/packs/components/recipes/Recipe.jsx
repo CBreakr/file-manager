@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { updateRecipe } from './api/recipeApi';
+import { updateRecipe } from '../../api/recipeApi';
 import EditableRecipe from './EditableRecipe';
 import NonEditableRecipe from './NonEditableRecipe';
+import '../../styles/recipe';
 
 class RecipeToggle extends React.PureComponent {
   static propTypes = {
@@ -84,7 +85,7 @@ export default class Recipe extends React.PureComponent {
                   :
                   <NonEditableRecipe recipe={this.state.recipe} />
                 }
-                <div className="has-text-right">
+                <div className="has-text-right buttons-padding">
                   <a
                     className="button is-primary"
                     onClick={toogle}>

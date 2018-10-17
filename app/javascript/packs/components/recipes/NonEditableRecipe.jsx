@@ -15,8 +15,7 @@ const NonEditableRecipe = ({ recipe }) => {
       <div className="card-content">
         <p className="title is-4">{recipe.title}</p>
         <div className="content">
-          {recipe.description}
-          <br></br>
+          <p>{recipe.description}</p>
           <time>{recipe.updated_at.toLocaleString()}</time>
         </div>
       </div>

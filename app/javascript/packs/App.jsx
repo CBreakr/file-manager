@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { getRecipes } from './api/recipeApi';
 import { mapIntoObject } from './utils/data_structure_util';
-import RecipeList from './RecipeList';
+import RecipeList from './components/recipes/RecipeList';
 
 export default class App extends React.PureComponent {
   constructor(props) {

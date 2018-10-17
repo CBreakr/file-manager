@@ -1,38 +1,14 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
-
-green_smoothie_bowl = Recipe.create(
-  title: 'Green rainbow smoothie bowl',
-  description: 'Start as you mean to go on with this super-healthy breakfast bowl of berries and avocado',
-  instruction: 'Put the spinach, avocado, mango, apple and almond milk in a blender, and blitz until smooth and thick. Divide between two bowls and top with the dragon fruit and berries.'
+Recipe.create(
+  title: 'Cardamom & peach quinoa porridge',
+  description: 'A healthy breakfast of oats and quinoa with fresh ripe peach. Almond milk makes its suitable for dairy-free and vegan diets.',
+  instruction: 'Put the quinoa, oats and cardamom pods in a small saucepan with 250ml water and 100ml of the almond milk. Bring to the boil, then simmer gently for 15 mins, stirring occasionally.
+                Pour in the remaining almond milk and cook for 5 mins more until creamy.
+                Remove the cardamom pods, spoon into bowls or jars, and top with the peaches and maple syrup.'
 )
 
-green_smoothie_bowl.ingredients.create([
-  { description: '50g spinach' },
-  { description: '1 avocado, stoned, peeled and halved' },
-  { description: '1 ripe mango, stoned, peeled and cut into chunks' },
-  { description: '1 apple, cored and cut into chunks' },
-  { description: '200ml almond milk' },
-  { description: '1 dragon fruit, peeled and cut into even chunks' },
-  { description: '100g mixed berries' }
-])
-
-berry_oats = Recipe.create(
-  title: 'Berry oats',
-  description: 'Overnight oats that are low in fat and take 5 minutes to prepare. Pack your breakfast with frozen raspberries, bio yogurt and golden linseeds for a delicious and healthy start to the day',
-  instruction: 'Tip the oats and seeds into a bowl, and pour over 200ml boiling water and stir well. Add the bananas and three-quarters of the raspberries (chill the remainder), mash together, then cover and chill overnight.
-                The next day, layer the raspberry oats in two tumblers or bowls with the yogurt, top with the reserved raspberries and serve.'
+Recipe.create(
+  title: 'Chocolate, peanut butter & avocado pudding',
+  description: "Avocado's neutral flavour and creamy texture makes it a wonderful substitute for dairy in desserts or smoothies. These little pots will keep for a few days in the fridge - a great make-ahead dessert!",
+  instruction: 'Scoop the avocado flesh into a food processor. Add the chopped banana, prunes, almond or coconut milk, smooth peanut butter and cacao powder. Blend until smooth, adding a little more milk if the blade gets stuck. Scrape down the sides once or twice and blend again.
+                Divide the mixture between 4 small glasses. Mix the coconut yogurt with the maple syrup or honey and top each pudding with a generous dollop. Finely grate a little dark chocolate over the top and chill for at least 1 hr.'
 )
-
-berry_oats.ingredients.create([
-  { description: '70g porridge oats' },
-  { description: '2 tbsp golden linseeds' },
-  { description: '2 ripe bananas' },
-  { description: '140g frozen raspberries' },
-  { description: '175g natural yogurt' }
-])
