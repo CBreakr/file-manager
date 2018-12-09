@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import DropzoneComponent from 'react-dropzone-component';
 import 'react-dropzone-component/styles/filepicker';
@@ -18,21 +18,7 @@ const componentConfig = {
   postUrl: 'no-url'
 }
 
-export default class ImageUploader extends React.PureComponent {
-  static propTypes = {
-    image: PropTypes.shape({
-      name: PropTypes.string,
-      byte_size: PropTypes.integer,
-      url: PropTypes.string
-    }),
-    selectImage: PropTypes.func.isRequired,
-    unselectImage: PropTypes.func.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-  }
-
+export default class ImageUploader extends PureComponent {
   showPreview = image => {
     if(image == null) return;
 
@@ -55,14 +41,15 @@ export default class ImageUploader extends React.PureComponent {
         this.myDropzone.emit("complete", mockFile);
       }
     );
-
-    this.myDropzone.options.maxFiles = this.myDropzone.options.maxFiles - 1;
   }
 
   removePrevAndAddNew = image => {
-    let prevImage = this.myDropzone.files[0];
-    this.myDropzone.emit('removedfile', prevImage);
-    this.myDropzone.files.push(image);
+    if(this.myDropzone.files.length > 1) {
+      let prevImage = this.myDropzone.files[0];
+      this.myDropzone.emit('removedfile', prevImage);
+    }
+
+    this.props.selectImage(image);
   }
 
   render() {
@@ -72,9 +59,8 @@ export default class ImageUploader extends React.PureComponent {
         this.myDropzone = dropzone;
         this.showPreview(image);
       },
-      maxfilesexceeded: image => this.removePrevAndAddNew(image),
-      addedfile: image => this.props.selectImage(image),
-      removedfile: image => this.props.unselectImage(image)
+      addedfile: image => this.removePrevAndAddNew(image),
+      removedfile: () => this.props.unselectImage()
     }
 
     return (
@@ -86,3 +72,13 @@ export default class ImageUploader extends React.PureComponent {
     );
   }
 }
+
+ImageUploader.propTypes = {
+  image: PropTypes.shape({
+    name: PropTypes.string,
+    byte_size: PropTypes.integer,
+    url: PropTypes.string
+  }),
+  selectImage: PropTypes.func.isRequired,
+  unselectImage: PropTypes.func.isRequired
+};

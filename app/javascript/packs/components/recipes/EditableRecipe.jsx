@@ -8,41 +8,36 @@ class EditableRecipe extends Component {
 
     this.state = {
       editableRecipe: this.props.recipe,
-      selectedImage: this.props.recipe.image
+      selectedImage: null
     }
 
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.selectImage = this.selectImage.bind(this);
-    this.unselectImage = this.unselectImage.bind(this);
   }
 
-  handleInputChange = event => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
+  handleInputChange = ({ target }) => {
+    const { value, name } = target;
+    const { editableRecipe } = this.state;
 
-    let { editableRecipe } = this.state;
-    editableRecipe = {...editableRecipe, [name]: value}
-    this.setState({ editableRecipe });
+    this.setState({
+      editableRecipe: {...editableRecipe, [name]: value}
+    });
   }
 
   handleSubmit = event => {
     event.preventDefault();
+
+    const { editableRecipe, selectedImage } = this.state;
     const formRecipeData = new FormData(event.target);
-    formRecipeData.append('image', this.state.selectedImage);
-    this.props.submit(formRecipeData);
+
+    if(selectedImage !== null) {
+      formRecipeData.append('image', selectedImage);
+    }
+    this.props.submit(formRecipeData, editableRecipe);
   }
 
-  selectImage = image => {
-    this.setState({ selectedImage: image });
-  }
+  selectImage = image => this.setState({ selectedImage: image });
 
-  unselectImage = image => {
-    if(this.state.selectedImage && this.state.selectedImage.name !== image.name) return;
-
-    this.setState({ selectedImage: '' });
-  }
+  unselectImage = () => this.setState({ selectedImage: '' });
 
   render() {
     const { editableRecipe } = this.state;

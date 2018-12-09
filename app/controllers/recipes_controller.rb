@@ -3,12 +3,10 @@ class RecipesController < ApplicationController
 
   # GET /api/recipes
   def index
-    @recipes = Recipe.all.with_attached_image
-
-    render json: @recipes
+    render json: Recipe.all.with_attached_image
   end
 
-  # POST /api/recipes/1
+  # PUT /api/recipes/1
   def update
     if UpdateRecipeService.new(@recipe, recipe_params).call
       render json: @recipe

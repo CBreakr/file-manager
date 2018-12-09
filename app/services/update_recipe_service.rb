@@ -5,15 +5,19 @@ class UpdateRecipeService
   end
 
   def call
-    if @params[:image].blank?
-      @params.delete(:image)
+    if @params[:image] && !file?(@params[:image])
       delete_image if @recipe.image.attached?
+      @params.delete(:image)
     end
 
     @recipe.update(@params)
   end
 
   private
+
+  def file?(param)
+    param.is_a?(ActionDispatch::Http::UploadedFile)
+  end
 
   def delete_image
     @recipe.image.purge

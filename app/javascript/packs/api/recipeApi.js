@@ -8,7 +8,7 @@ export function getRecipes() {
 
 export function updateRecipe(formData, recipeId) {
   return axios({
-    method: 'post',
+    method: 'put',
     url: `${API_URL}/${recipeId}`,
     data: formData,
     config: { headers: {'Content-Type': 'multipart/form-data' }}

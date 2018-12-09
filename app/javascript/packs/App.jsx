@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import axios from 'axios';
-import { getRecipes } from './api/recipeApi';
+import { getRecipes, updateRecipe } from './api/recipeApi';
 import { mapIntoObject } from './utils/data_structure_util';
 import RecipeList from './components/recipes/RecipeList';
 
-export default class App extends React.PureComponent {
+export default class App extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = { recipes: {} }
-
-    this.updateRecipe = this.updateRecipe.bind(this);
+    this.state = {
+      recipes: {}
+    }
   }
 
   componentWillMount() {
@@ -21,7 +21,7 @@ export default class App extends React.PureComponent {
     this.fetchRecipes();
   }
 
-  fetchRecipes() {
+  fetchRecipes = () => {
     getRecipes().then(response => {
       this.setState({ recipes: mapIntoObject(response.data) })
     }).catch(error => {
@@ -29,12 +29,17 @@ export default class App extends React.PureComponent {
     });
   }
 
-  updateRecipe = recipe => {
+  update = ({formData, recipe}, callback) => {
     const { recipes } = this.state;
-    recipes[recipe.id] = recipe;
-    this.setState({ recipes }, () =>
+
+    updateRecipe(formData, recipe.id).then(response => {
+      this.setState({
+        recipes: {...recipes, [recipe.id]: response.data }
+      }, () => callback())
       alert(`Recipe ${recipe.title} updated!`)
-    );
+    }).catch(error => {
+      alert(`Something went wrong: ${error}`)
+    });
   }
 
   render() {
@@ -45,7 +50,7 @@ export default class App extends React.PureComponent {
         <div className="container">
           <RecipeList
             recipes={Object.values(recipes)}
-            updateRecipe={this.updateRecipe}
+            update={this.update}
           />
         </div>
       </section>
